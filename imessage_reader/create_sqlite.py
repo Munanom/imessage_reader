@@ -47,6 +47,7 @@ class CreateDatabase:
         )
 
         for data in self.imessage_data:
+            if data.user_id == "Mpesa":
             cur.execute(
                 """INSERT INTO Messages (user_id, message, date, service, destination_caller_id, is_from_me)
                 VALUES(?, ?, ?, ?, ?, ?)""",
@@ -67,3 +68,46 @@ class CreateDatabase:
         print(">>> SQLite database successfully created! <<<")
         print("You find the Database in your Documents folder.")
         print()
+    def create_sqlite_db(self):
+    """Create a SQLite3 database in the Desktop folder.
+    Add user, text, date, and service to the database.
+    Only insert records where user_id is "Mpesa."
+    """
+    database = self.file_path + "iMessage-Data.sqlite"
+
+    conn = sqlite3.connect(database)
+    cur = conn.cursor()
+
+    cur.execute("DROP TABLE IF EXISTS Messages")
+
+    cur.execute(
+        """
+    CREATE TABLE IF NOT EXISTS Messages (user_id TEXT,
+    message TEXT,
+    date TEXT,
+    service TEXT,
+    destination_caller_id TEXT, 
+    is_from_me TEXT)"""
+    )
+
+    # Iterate through the imessage_data and insert records where user_id is "Mpesa"
+    for data in self.imessage_data:
+        if data.user_id == "Mpesa":
+            cur.execute(
+                """INSERT INTO Messages (user_id, message, date, service, destination_caller_id, is_from_me)
+                VALUES(?, ?, ?, ?, ?, ?)""",
+                (
+                    data.user_id,
+                    data.date,
+               
+                ),
+            )
+
+    conn.commit()
+    cur.close()
+
+    print()
+    print(">>> SQLite database successfully created! <<<")
+    print("You find the Database in your Documents folder.")
+    print()
+

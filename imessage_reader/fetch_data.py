@@ -102,35 +102,71 @@ class FetchData:
 
         return data
 
+    # def show_user_txt(self, export: str):
+    #     """Invoke _read_database(), print fetched data and export data.
+    #     (This method is for CLI usage.)
+
+    #     :param export: Determine whether to export data
+    #     """
+
+    #     # Check the running operating system
+    #     self._check_system()
+
+    #     # Read chat.db
+    #     fetched_data = self._read_database()
+
+    #     # CLI output
+    #     if export == "nothing":
+    #         for data in fetched_data:
+    #             print(data)
+
+    #     # Excel export
+    #     if export == "excel":
+    #         self._export_excel(fetched_data)
+
+    #     # SQLite3 export
+    #     if export == "sqlite":
+    #         self._export_sqlite(fetched_data)
+
+    #     # Show all recipients
+    #     if export == "recipients":
+    #         mpesa_recipients = [recipient for recipient in self.recipients if recipient.name == 'Mpesa']
+    # # Now mpesa_recipients contains only recipients with the name 'mpesa'
+
     def show_user_txt(self, export: str):
-        """Invoke _read_database(), print fetched data and export data.
-        (This method is for CLI usage.)
+    """Invoke _read_database(), print fetched data, and export data.
+    (This method is for CLI usage.)
 
-        :param export: Determine whether to export data
-        """
+    :param export: Determine whether to export data
+    """
 
-        # Check the running operating system
-        self._check_system()
+    # Check the running operating system
+    self._check_system()
 
-        # Read chat.db
-        fetched_data = self._read_database()
+    # Read chat.db
+    fetched_data = self._read_database()
 
-        # CLI output
-        if export == "nothing":
-            for data in fetched_data:
-                print(data)
+    # CLI output
+    if export == "nothing":
+        for data in fetched_data:
+            print(data)
 
-        # Excel export
-        if export == "excel":
-            self._export_excel(fetched_data)
+    # Excel export
+    if export == "excel":
+        self._export_excel(fetched_data)
 
-        # SQLite3 export
-        if export == "sqlite":
-            self._export_sqlite(fetched_data)
+    # SQLite3 export
+    if export == "sqlite":
+        self._export_sqlite(fetched_data)
 
-        # Show all recipients
-        if export == "recipients":
-            self._get_recipients()
+    # Show recipients with the name 'Mpesa'
+    if export == "recipients":
+        # Filter the recipients list to include only those with the name 'Mpesa'
+        mpesa_recipients = [recipient for recipient in fetched_data if recipient.is_from_me == 0 and recipient.text == 'Mpesa']
+        
+        # Now mpesa_recipients contains only recipients with the name 'Mpesa'
+        for recipient in mpesa_recipients:
+            print(recipient)
 
     def _export_excel(self, data: list):
         """Export data (write Excel file)
